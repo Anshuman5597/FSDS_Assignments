@@ -1,0 +1,21 @@
+Q-1. Write an SQL query to print the first three characters of  FIRST_NAME from Worker
+table.
+
+Ans:	select LEFT(FIRST_NAME ,3) from Worker;
+
+Q-2. Write an SQL query to find the position of the alphabet (‘a’) in the first name
+column ‘Amitabh’ from Worker table.
+
+Ans: select position('a'IN (select FIRST_NAME from Worker where First_Name='Amitabh'));
+
+q-3.Write an SQL query to print the name of employees having the highest salary in each
+department.
+
+Ans: WITH cteRowNum AS (
+    SELECT FIRST_NAME,LAST_NAME,Salary,DEPARTMENT,
+           DENSE_RANK() OVER(PARTITION BY DEPARTMENT ORDER BY Salary DESC) AS RowNum
+        FROM Worker
+)
+SELECT DEPARTMENT,CONCAT(FIRST_NAME,LAST_NAME) AS FULL_NAME  
+    FROM cteRowNum
+    WHERE RowNum = 1;
